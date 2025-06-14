@@ -1,0 +1,23 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "description": "My first independant website venture. My main goal with this is to properly learn the ins and out of website building and rest api communication.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jarbki/Website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jarbki/Website/issues"
+  },
+  "homepage": "https://github.com/Jarbki/Website#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
