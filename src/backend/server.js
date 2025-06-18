@@ -60,7 +60,6 @@ app.get('/api/sounds', (req, res) => {
 });
 
 
-
 // Custom storage to decide destination dynamically
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -95,3 +94,8 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage: storage });
+
+app.post('/api/upload', upload.single('mediaFile'), (req, res) => {
+  console.log(`Uploaded ${req.file.filename} to ${req.file.destination}`);
+  res.send('File uploaded successfully!');
+});
