@@ -16,13 +16,20 @@
       <button onclick="fetchMedia('sounds')">View Sounds</button>
     </div>
 
-    <div id="mediaDisplay"></div>
+    <div id="image-grid" class="grid"></div>
+    <div id="lightbox" class="lightbox hidden">
+      <span id="lightbox-close">&times;</span>
+      <img id="lightbox-img" src="" alt="Expanded image">
+    </div>
+    
   </div>
+
+ <nav>
+    <a href="../index.html">← Back to Home</a>
+  </nav>
 
   <script src="view.js"></script>
   
-  <nav>
-    <a href="../index.html">← Back to Home</a>
-  </nav>
+
 </body>
 </html>

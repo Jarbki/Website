@@ -8,7 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from the frontend folder
 app.use(express.static(path.join(__dirname, '../frontend')));
-
+app.use('/media', express.static(path.join(__dirname, '../media')));
 // Default route: serve index.html
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));

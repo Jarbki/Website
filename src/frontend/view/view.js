@@ -42,3 +42,43 @@
           document.getElementById('mediaDisplay').innerText = 'Error loading media.';
         });
     }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+    const grid = document.getElementById('image-grid');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.getElementById('lightbox-close');
+
+  try {
+    const response = await fetch('/api/images');
+    const files = await response.json();
+
+    files.forEach(file => {
+      const img = document.createElement('img');
+      img.src = `/media/images/${file}`;
+      img.alt = file;
+
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.remove('hidden');
+      });
+
+      grid.appendChild(img);
+    });
+  } catch (err) {
+    console.error('Failed to load images:', err);
+  }
+
+  closeBtn.addEventListener('click', () => {
+    lightbox.classList.add('hidden');
+    lightboxImg.src = '';
+  });
+
+  // Optional: click outside the image closes the lightbox
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      lightbox.classList.add('hidden');
+      lightboxImg.src = '';
+    }
+  });
+});
