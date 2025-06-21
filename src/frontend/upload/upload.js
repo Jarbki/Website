@@ -1,23 +1,49 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('form');
+  const mediaType = document.getElementById('mediaType');
+  const mediaFile = document.getElementById('mediaFile');
+
+  const allowedExtensions = {
+    image: ['.jpg', '.jpeg', '.png', '.gif', '.webp'],
+    sound: ['.mp3', '.wav', '.ogg'],
+    video: ['.mp4', '.webm', '.avi', '.mov']
+  };
+
+  const acceptMap = {
+    image: 'image/*',
+    sound: 'audio/*',
+    video: 'video/*'
+  };
+
+  mediaType.addEventListener('change', () => {
+    mediaFile.accept = acceptMap[mediaType.value] || '';
+    mediaFile.value = ''; // reset file input
+  });
 
   form.addEventListener('submit', async (event) => {
-    event.preventDefault(); // stop default form behavior
+    event.preventDefault(); // prevent default form submission
 
-    const formData = new FormData(form);
+    const file = mediaFile.files[0];
+    if (!file) return;
+
+    const type = mediaType.value;
+    const validExtensions = allowedExtensions[type];
+    const extension = file.name.toLowerCase().match(/\.[0-9a-z]+$/)?.[0];
+
+    if (!extension || !validExtensions.includes(extension)) {
+      showMessage(`Invalid file type. Please upload one of: ${validExtensions.join(', ')}`, true);
+      return;
+    }
 
     try {
+      const formData = new FormData(form);
       const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData
       });
 
       const text = await response.text();
-
-      // Show success message
-      showMessage(text);
-
-      // Clear the form
+      showMessage(text);  // Success
       form.reset();
     } catch (error) {
       showMessage('Upload failed. Please try again.', true);
@@ -36,9 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
       message.style.borderRadius = '5px';
       message.style.cursor = 'pointer';
       message.style.fontWeight = 'bold';
-      message.addEventListener('click', () => {
-        message.remove(); // remove on click
-      });
+      message.addEventListener('click', () => message.remove());
       form.after(message);
     }
 

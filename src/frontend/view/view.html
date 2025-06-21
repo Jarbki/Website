@@ -11,25 +11,26 @@
     <h1>Storage</h1>
 
     <div style="margin-bottom: 1.5rem;">
-      <button onclick="fetchMedia('images')">View Images</button>
-      <button onclick="fetchMedia('videos')">View Videos</button>
-      <button onclick="fetchMedia('sounds')">View Sounds</button>
+      <button onclick="fetchMedia('images')">Images</button>
+      <button onclick="fetchMedia('videos')">Videos</button>
+      <button onclick="fetchMedia('sounds')">Sounds</button>
     </div>
 
-    <div id="image-grid" class="grid"></div>
+    <!-- ✅ This is where media will be shown -->
+    <div id="mediaDisplay" class="grid"></div>
+
+    <!-- Lightbox only for images -->
     <div id="lightbox" class="lightbox hidden">
       <span id="lightbox-close">&times;</span>
       <img id="lightbox-img" src="" alt="Expanded image">
     </div>
-    
+
+    <nav>
+      <a href="../index.html">← Back to Home</a>
+    </nav>
   </div>
 
- <nav>
-    <a href="../index.html">← Back to Home</a>
-  </nav>
-
   <script src="view.js"></script>
-  
 
 </body>
 </html>
