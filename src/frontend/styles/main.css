@@ -185,3 +185,10 @@ th {
   padding: 1rem;
 }
 
+.grid video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+

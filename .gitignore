@@ -23,3 +23,5 @@ buildNumber.properties
 .mp3
 .wav
 
+# git crash files
+*.stackdump

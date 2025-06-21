@@ -38,8 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
             element = document.createElement('video');
             element.src = fileUrl;
             element.controls = true;
-            element.style.maxWidth = '400px';
-            element.style.margin = '10px';
+            element.style.width = '100%';           // Stretch to fill grid cell
+            element.style.height = 'auto';          // Maintain aspect ratio
+            element.style.display = 'block';        // Ensure no inline weirdness
+            element.style.objectFit = 'cover';      // Optional: avoid distortion
           }
 
           else if (type === 'sounds') {
