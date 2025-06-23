@@ -25,3 +25,6 @@ buildNumber.properties
 
 # git crash files
 *.stackdump
+
+#secret
+.env
