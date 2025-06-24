@@ -1,11 +1,19 @@
-const { Client, IntentsBitField } = require('discord.js');
 require('dotenv').config();
+
+const { Client, IntentsBitField } = require('discord.js');
+const listCommand = require('./commands/list');
+const recordCommand = require('./commands/record');
+const soundCommand = require('./commands/sound');
+
+client.login(process.env.DISCORD_TOKEN);
 const client = new Client({
     intents: [
         IntentsBitField.Flags.Guilds,
         IntentsBitField.Flags.GuildMembers,
         IntentsBitField.Flags.GuildMessages,
-        IntentsBitField.Flags.MessageContent
+        IntentsBitField.Flags.MessageContent,
+        IntentsBitField.Flags.DirectMessageReactions,
+        IntentsBitField.Flags.GuildMessageReactions
     ]
 })
 
@@ -15,7 +23,11 @@ client.on('ready',(c) => {
 
 client.on('messageCreate', (msg) =>{
     var command = processMessage(msg);
-    if (command){
+
+    if (msg.author.bot) return;
+    
+    if (msg[0]=='!'){
+        handleCommand(msg);
         console.log(`Message sent by user ${msg.author.globalName} was a command: ${msg.content}`)
     } else {
         console.log(`Message sent by user ${msg.author.globalName} was not a command: ${msg.content}`)
@@ -24,14 +36,28 @@ client.on('messageCreate', (msg) =>{
 });
 
 
-client.login(process.env.DISCORD_TOKEN);
+function handleCommand(msg) {
+    var command = msg.content.slice(1).split(" ")[0];
+    switch (command) {
+        case "list":
+            // handle !list
+            msg.reply("You triggered the list command!");
+            listCommand(msg);
+            break;
 
-function processMessage(msg){
-    var message = msg.content;
-    var command = false;
-    if (msg[0] === '/'){
-        command = true;
+        case "record":
+            // handle !record
+            msg.reply("You triggered the record command!");
+            recordCommand()
+            break;
+
+        case "sound":
+            // handle !sound
+            msg.reply("You triggered the sound command!");
+            
+            break;
+
+        default:
+            msg.reply(`Unknown command: ${command}`);
     }
-
-    return command;
 }
