@@ -4,6 +4,7 @@ const { Client, IntentsBitField } = require('discord.js');
 const listCommand = require('./commands/list');
 const recordCommand = require('./commands/record');
 const soundCommand = require('./commands/sound');
+const { record, stop } = require('./commands/record');
 
 client.login(process.env.DISCORD_TOKEN);
 const client = new Client({
@@ -48,7 +49,11 @@ function handleCommand(msg) {
         case "record":
             // handle !record
             msg.reply("You triggered the record command!");
-            recordCommand()
+            record()
+            break;
+
+        case "stop record":
+            stop()
             break;
 
         case "sound":

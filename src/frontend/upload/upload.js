@@ -1,4 +1,16 @@
+
+
 document.addEventListener('DOMContentLoaded', () => {
+
+  (async () => {
+    try {
+      const res = await fetch('/api/all-filenames');
+      existingFilenames = await res.json();
+    } catch (err) {
+      console.error('Failed to load filenames:', err);
+    }
+  })();
+
   const form = document.querySelector('form');
   const mediaType = document.getElementById('mediaType');
   const mediaFile = document.getElementById('mediaFile');
@@ -15,15 +27,28 @@ document.addEventListener('DOMContentLoaded', () => {
     video: 'video/*'
   };
 
+  // changing filetype 
   mediaType.addEventListener('change', () => {
     mediaFile.accept = acceptMap[mediaType.value] || '';
     mediaFile.value = ''; // reset file input
   });
 
+  // uploading the file
   form.addEventListener('submit', async (event) => {
-    event.preventDefault(); // prevent default form submission
+    event.preventDefault();
 
+    let existingFilenames = {};
+    const nameInput = mediaName.value.trim();
+    const name = nameInput || file.name.substring(0, file.name.lastIndexOf('.'));
+    const fullName = name + extension;
     const file = mediaFile.files[0];
+
+    const taken = existingFilenames[type + 's'] || [];
+    if (taken.includes(fullName)) {
+      showMessage(`A ${type} with the name "${fullName}" already exists. Please choose a different name.`, true);
+      return;
+    }
+
     if (!file) return;
 
     const type = mediaType.value;
