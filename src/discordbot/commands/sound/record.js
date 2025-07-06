@@ -7,15 +7,31 @@ const ffmpeg = require('fluent-ffmpeg');
 const ffmpegPath = require('ffmpeg-static');
 const path = require('path');
 
+
+const { SlashCommandBuilder } = require('discord.js');
+
+module.exports = {
+	cooldown: 5,
+	data: new SlashCommandBuilder()
+		.setName('ping')
+		.setDescription('Replies with Pong!'),
+	async execute(interaction) {
+    const voiceChannel = msg.member?.voice?.channel;
+
+    if (!voiceChannel) {
+      await interaction.reply("Join a voice channel first bruh.");
+      return;
+    }
+		await interaction.reply(`Recording voices in ${voiceChannel}!`);
+    await record(interaction)
+
+	},
+};
+
+
 const recordingSessions = new Map();
 // record function
-function record(msg) {
-  const voiceChannel = msg.member?.voice?.channel;
-  
-  if (!voiceChannel) {
-    msg.reply("Join a voice channel first.");
-    return;
-  }
+async function record(msg) {
 
    if (recordingSessions.has(voiceChannel)) {
     msg.reply("This channel is already being recorded");
@@ -87,6 +103,3 @@ function play(name){
 function echo(filter){
     
 }
-
-module.exports = record;
-module.exports = stop;
