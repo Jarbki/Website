@@ -1,12 +1,19 @@
 require('dotenv').config();
 
-const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const { Client, Collection, Events, GatewayIntentBits, MessageFlags,  } = require('discord.js');
+const client = new Client({ intents: [
+	GatewayIntentBits.Guilds, 
+	GatewayIntentBits.GuildVoiceStates, 
+	GatewayIntentBits.GuildMembers
+] });
+
 const fs = require('node:fs');
 const path = require('node:path');
 
 client.cooldowns = new Collection();
 client.commands = new Collection();
+client.recordingSessions = new Map();
+
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 

@@ -10,33 +10,43 @@ const path = require('path');
 
 const { SlashCommandBuilder } = require('discord.js');
 
+
 module.exports = {
 	cooldown: 5,
 	data: new SlashCommandBuilder()
-		.setName('ping')
-		.setDescription('Replies with Pong!'),
-	async execute(interaction) {
-    const voiceChannel = msg.member?.voice?.channel;
+		.setName('record')
+		.setDescription('Records voice audio from a channel')
+    .addStringOption(option => 
+      option.setName("input")
+      .setDescription("Name of recording")
+      .setRequired(true)
+    ),
 
+	async execute(interaction) {
+    const voiceChannel = interaction.member?.voice?.channel;
+    const recordingSessions = interaction.client.recordingSessions;
+
+    console.log(voiceChannel);
     if (!voiceChannel) {
       await interaction.reply("Join a voice channel first bruh.");
       return;
     }
+
+    if (recordingSessions.has(voiceChannel)) {
+      interaction.reply("This channel is already being recorded");
+      return;
+    }
+
 		await interaction.reply(`Recording voices in ${voiceChannel}!`);
-    await record(interaction)
+    await record(interaction, voiceChannel, recordingSessions)
 
 	},
 };
 
 
-const recordingSessions = new Map();
-// record function
-async function record(msg) {
 
-   if (recordingSessions.has(voiceChannel)) {
-    msg.reply("This channel is already being recorded");
-    return;
-  }
+// record function
+async function record(interaction, voiceChannel, recordSessions) {
 
   const connection = joinVoiceChannel({
     channelId: voiceChannel.id,
@@ -46,12 +56,14 @@ async function record(msg) {
 
   // listen for speaking events
   connection.receiver.speaking.on('start', (userId) => {
-    if (recordingStreams.has(userId)) return; // already recording
+    if (recordSessions.has(userId)) return; // already recording
 
     // subscribe to user audio
     const audioStream = connection.receiver.subscribe(userId, {
       end: {behavior: EndBehaviorType.Manual}
     });
+
+
 
 
     // used to decode from OPUS to raw PCM.
@@ -77,9 +89,21 @@ async function record(msg) {
         });
 
     recordingStreams.set(userId, ffmpegProcess);
-    msg.reply(`🔴 Started recording <@${userId}>`);
+        
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 function stop(msg) {
     const userId = msg.author.id;
