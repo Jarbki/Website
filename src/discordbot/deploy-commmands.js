@@ -1,4 +1,6 @@
 require('dotenv').config();
+console.log('Working directory:', process.cwd());
+console.log("token: " + process.env.DISCORD_TOKEN);
 
 const { REST, Routes } = require('discord.js');
 const fs = require('node:fs');
