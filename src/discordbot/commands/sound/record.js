@@ -65,8 +65,6 @@ async function record(interaction, voiceChannel, recordSessions) {
     });
 
 
-
-
     // used to decode from OPUS to raw PCM.
     const rawStream = new prism.opus.Decoder({ frameSize: 960, channels: 2, rate: 48000 });
 
