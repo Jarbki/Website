@@ -6,6 +6,7 @@ const prism = require('prism-media');
 const ffmpeg = require('fluent-ffmpeg');
 const ffmpegPath = require('ffmpeg-static');
 const path = require('path');
+const { request } = require('undici');
 
 
 const { SlashCommandBuilder } = require('discord.js');
